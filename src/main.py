@@ -47,10 +47,18 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from wordcloud import WordCloud
 from gensim.models import Word2Vec
 from gensim.models import KeyedVectors
+import warnings
+from sklearn.model_selection import train_test_split 
+from sklearn.model_selection import KFold
+from sklearn.model_selection import cross_val_score
 import pickle
 import gensim
 from tqdm import tqdm
+from sklearn.preprocessing import LabelEncoder
 from data_preprocessing import clean_text, preprocess_text, sentence_to_words
+from ml_algorithms.KNN import KNN_train_n_5_fold_cv
+from sklearn import preprocessing
+from sklearn.preprocessing import Normalizer
 
 
 #%%
@@ -163,30 +171,79 @@ print(raw_data['Clean_Text'])
 print(f"Sentence cleaned: {raw_data['Clean_Text'].values[0]}")
 print(f"Words in cleaned sentence{list_of_words_in_sentance[0]}")
 
+#%%
+#%%[markdown]
+# Time Based Splitting 
+
+#%%
+final_reviews = raw_data.sort_values('Time', axis=0, ascending=True, inplace=False, kind='quicksort', na_position='last')
+final_reviews.shape
+
+#%%
+# Label Encoding Reviews Column
+label_encoder = LabelEncoder()
+
+# Fit and transform the "Review" column
+raw_data['Review'] = label_encoder.fit_transform(raw_data['Review'])
+
+#%%[markdown]
+# Train and Test Split
+
+#%%
+# Splitting data into train, Train and Test 
+X = raw_data['Clean_Text']
+Y = raw_data['Review']
+
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=.20, random_state=123)
+
+print('X_train, Y_train', X_train.shape, Y_train.shape)
+print('X_test, Y_test', X_test.shape, Y_test.shape)
+
 #%%[markdown]
 ## Bag of Words 
 
 #%%
+# Bag Of Words
 Count_vectorizer = CountVectorizer()
-bow_data = Count_vectorizer.fit_transform(raw_data["Clean_Text"].values)
-print(f"Shape of dataset after converting into BOW is {bow_data.get_shape()}")
+X_train_bow = Count_vectorizer.fit_transform(X_train.values)
+print(f"Shape of dataset after converting into BOW is {X_train_bow.get_shape()}")
+X_test_bow = Count_vectorizer.fit_transform(X_test.values)
+print(f"Shape of dataset after converting into BOW is {X_test_bow.get_shape()}")
+
+#%%
+# Normalize BOW Train and Test Data
+X_train_bow=preprocessing.normalize(X_train_bow)
+X_test_bow=preprocessing.normalize(X_test_bow)
+print("The shape of out text BOW vectorizer ",X_train_bow.get_shape())
+print("Test Data Size: ",X_test_bow.shape)
 
 #%%[markdown]
 ## Uni, Bi and Tri Grams
 
 #%%
-Count_vectorizer_uni_bi_tri_grams = CountVectorizer(ngram_range=(1,3) ) 
-final_uni_bi_tri_gram_counts = Count_vectorizer_uni_bi_tri_grams.fit_transform(raw_data["Clean_Text"].values)
-print("Shape of dataset after converting into uni, bi and tri-grams is ",final_uni_bi_tri_gram_counts.get_shape())
+Count_vectorizer_n_grams = CountVectorizer(ngram_range=(1,3) ) 
+X_train_n_grams = Count_vectorizer_n_grams.fit_transform(X_train.values)
+print("Shape of dataset after converting into uni, bi and tri-grams is ",X_train_n_grams.get_shape())
+X_test_n_grams = Count_vectorizer_n_grams.fit_transform(X_test.values)
+print("Shape of dataset after converting into uni, bi and tri-grams is ",X_test_n_grams.get_shape())
 
 #%%[markdown]
 ## Tf-Idf Vectorization
 
 #%%
-
+# tf-idf Vectorizer
 tf_idf_vectorizer = TfidfVectorizer(ngram_range=(1,2))
-tf_idf_vectorizer = tf_idf_vectorizer.fit_transform(raw_data['Clean_Text'].values)
-print("Shape of dataset after converting into tf-idf is ",tf_idf_vectorizer.get_shape())
+X_train_tf_idf_vectorizer = tf_idf_vectorizer.fit_transform(X_train.values)
+X_test_tf_idf_vectorizer = tf_idf_vectorizer.fit_transform(X_test.values)
+print("Shape of dataset after converting into tf-idf is ",X_train_tf_idf_vectorizer.get_shape())
+print("Shape of dataset after converting into tf-idf is ",X_test_tf_idf_vectorizer.get_shape())
+
+#%%
+# Normalize Tf-Idf Train and Test Data
+X_train_tfidf=preprocessing.normalize(X_train_tf_idf_vectorizer)
+X_test_tfidf=preprocessing.normalize(X_test_tf_idf_vectorizer)
+print("The shape of out text BOW vectorizer ",X_train_tfidf.get_shape())
+print("Test Data Size: ",X_test_tfidf.shape)
 
 #%%[markdown]
 ## word2vec Model
@@ -230,6 +287,13 @@ for sent in tqdm(list_of_words_in_sentance): # Iterating over each review/senten
     sent_vectors_avg_word2vec.append(sent_vec)
 print(len(sent_vectors_avg_word2vec))
 
+#%%
+X_train_avg_wor2vec, X_test_avg_wor2vec, Y_train_avg_wor2vec, Y_test_avg_wor2vec = train_test_split(sent_vectors_avg_word2vec,Y, test_size=.20, random_state=0)
+X_train_avg_wor2vec=preprocessing.normalize(X_train_avg_wor2vec)
+X_test_avg_wor2vec=preprocessing.normalize(X_test_avg_wor2vec)
+print(X_train_avg_wor2vec.shape)
+print(X_test_avg_wor2vec.shape)
+
 #%%[markdown]
 ## Tf-Idf Wword2vec 
 
@@ -263,9 +327,13 @@ for sent in tqdm(list_of_words_in_sentance): # for each review/sentence
     tfidf_sent_vectors.append(sent_vec)
     row += 1
 
+X_train_tfidf_word2vec, X_test_tfidf_word2vec, Y_train_tfidf_wor2vec, Y_test_tfidf_wor2vec = train_test_split(tfidf_sent_vectors, Y, test_size=0.20,random_state=0)
+X_train_tfidf_word2vec=preprocessing.normalize(X_train_tfidf_word2vec)
+X_test_tfidf_word2vec=preprocessing.normalize(X_test_tfidf_word2vec)
+print(X_train_tfidf_word2vec.shape)
+print(X_test_tfidf_word2vec.shape)
 
-# In[ ]:
+#%%
+KNN_train_n_5_fold_cv(X_train_bow, X_test_bow)
 
-
-
-
+#%%
