@@ -27,7 +27,7 @@ def KNN_train_n_5_fold_cv(X_train,Y_train):
         knn = KNeighborsClassifier(n_neighbors=i,algorithm='kd_tree')
         knn.fit(X_train,Y_train)
 
-        cv = KFold(n_splits=5, random_state=1, shuffle=False)
+        cv = KFold(n_splits=5)
         cv_accuracy = cross_val_score(knn, X_train, Y_train, scoring='accuracy', cv=cv, n_jobs=-1)
         cv_auc_roc = cross_val_score(knn, X_train, Y_train, scoring='roc_auc', cv=cv, n_jobs=-1)
 
@@ -50,7 +50,7 @@ def KNN_train_n_5_fold_cv(X_train,Y_train):
         if(best_accuracy < np.mean(cv_accuracy)):
             best_accuracy = np.mean(cv_accuracy)
             best_k_accuracy = i
-            
+
     print(f"k-value when best Accuracy was achieved is : {best_k_auc} ")
     print(f"k-value when best AUC was achieved is : {best_k_accuracy} ")
 

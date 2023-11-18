@@ -334,6 +334,6 @@ print(X_train_tfidf_word2vec.shape)
 print(X_test_tfidf_word2vec.shape)
 
 #%%
-KNN_train_n_5_fold_cv(X_train_bow, X_test_bow)
+KNN_train_n_5_fold_cv(X_train_bow, Y_train)
 
 #%%
