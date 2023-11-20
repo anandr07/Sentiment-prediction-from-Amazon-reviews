@@ -36,9 +36,12 @@ def KNN_train_n_5_fold_cv(X_train,Y_train):
 
         prob = knn.predict_proba(X_train)
         prob  = prob[:, 1]
+        
+        threshold = 0.5
+        binary_preds = (prob > threshold).astype(int)
 
-        auc_score_train = roc_auc_score(Y_train,prob)
-        accuracy_train = accuracy_score(Y_train,prob)
+        auc_score_train = roc_auc_score(Y_train,binary_preds)
+        accuracy_train = accuracy_score(Y_train,binary_preds)
 
         print(f"k value : {i}  CV Accuracy : {np.mean(cv_accuracy)}  CV AUC-ROC Score : {np.mean(cv_auc_roc)}")
         pred_train_auc_roc.append(auc_score_train)
@@ -88,7 +91,7 @@ def KNN_train_n_5_fold_cv(X_train,Y_train):
     plt.show()
 
     # Plotting ROC Curve
-    fpr, tpr, _ = roc_curve(Y_train, prob)
+    fpr, tpr, _ = roc_curve(Y_train, binary_preds)
     roc_auc = auc(fpr, tpr)
     plt.plot(fpr, tpr, color='darkorange', lw=2, label='ROC curve (area = {:.2f})'.format(roc_auc))
     plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
