@@ -10,7 +10,7 @@
 # 
 # Contents
 # 
-# database.sqlite: Contains the table 'Reviews'
+# database.csv: Contains the table 'Reviews'
 # 
 # Data includes:
 # 
