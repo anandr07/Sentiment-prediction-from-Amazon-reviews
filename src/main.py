@@ -56,7 +56,7 @@ import gensim
 from tqdm import tqdm
 from sklearn.preprocessing import LabelEncoder
 from data_preprocessing import clean_text, preprocess_text, sentence_to_words
-from ml_algorithms.KNN import KNN_train_n_5_fold_cv
+from ml_algorithms.KNN import KNN_train_simple_cv, KNN_test
 from sklearn import preprocessing
 from sklearn.preprocessing import Normalizer
 
@@ -207,7 +207,7 @@ print('X_test, Y_test', X_test.shape, Y_test.shape)
 Count_vectorizer = CountVectorizer()
 X_train_bow = Count_vectorizer.fit_transform(X_train.values)
 print(f"Shape of dataset after converting into BOW is {X_train_bow.get_shape()}")
-X_test_bow = Count_vectorizer.fit_transform(X_test.values)
+X_test_bow = Count_vectorizer.transform(X_test.values)  # Use transform instead of fit_transform
 print(f"Shape of dataset after converting into BOW is {X_test_bow.get_shape()}")
 
 #%%
@@ -315,7 +315,7 @@ for sent in tqdm(list_of_words_in_sentance): # for each review/sentence
     for word in sent: # for each word in a review/sentence
         if word in w2v_vocab:
             vec = w2v_model.wv[word]
-#             tf_idf = tf_idf_matrix[row, tfidf_feat.index(word)]
+            #  tf_idf = tf_idf_matrix[row, tfidf_feat.index(word)]
             # to reduce the computation we are 
             # dictionary[word] = idf value of word in whole courpus
             # sent.count(word) = tf valeus of word in this review
@@ -334,6 +334,16 @@ print(X_train_tfidf_word2vec.shape)
 print(X_test_tfidf_word2vec.shape)
 
 #%%
-KNN_train_n_5_fold_cv(X_train_bow, Y_train)
+trained_KNN_Model = KNN_train_simple_cv(X_train_bow, Y_train)
+
+#%%[markdown]
+# Best K found after cross-validation is 9. 
+# 9 - AUC Score (CV): 0.7960000529291101  Accuracy (CV): 0.862242720164909
+
+# Recording the AUC and Accuracy of Test Data
+
+#%%
+# AUC and Accuracy of Test Data
+test_bow_results = KNN_test(trained_KNN_Model, X_test_bow, Y_test)
 
 #%%
