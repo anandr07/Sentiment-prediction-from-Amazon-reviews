@@ -56,7 +56,7 @@ import gensim
 from tqdm import tqdm
 from sklearn.preprocessing import LabelEncoder
 from data_preprocessing import clean_text, preprocess_text, sentence_to_words
-from ml_algorithms.KNN import KNN_train_simple_cv, KNN_test
+from ml_algorithms.KNN import KNN_train_simple_cv
 from sklearn import preprocessing
 from sklearn.preprocessing import Normalizer
 
@@ -224,7 +224,7 @@ print("Test Data Size: ",X_test_bow.shape)
 Count_vectorizer_n_grams = CountVectorizer(ngram_range=(1,3) ) 
 X_train_n_grams = Count_vectorizer_n_grams.fit_transform(X_train.values)
 print("Shape of dataset after converting into uni, bi and tri-grams is ",X_train_n_grams.get_shape())
-X_test_n_grams = Count_vectorizer_n_grams.fit_transform(X_test.values)
+X_test_n_grams = Count_vectorizer_n_grams.transform(X_test.values)
 print("Shape of dataset after converting into uni, bi and tri-grams is ",X_test_n_grams.get_shape())
 
 #%%[markdown]
@@ -232,11 +232,13 @@ print("Shape of dataset after converting into uni, bi and tri-grams is ",X_test_
 
 #%%
 # tf-idf Vectorizer
-tf_idf_vectorizer = TfidfVectorizer(ngram_range=(1,2))
+tf_idf_vectorizer = TfidfVectorizer(ngram_range=(1, 2))
+
 X_train_tf_idf_vectorizer = tf_idf_vectorizer.fit_transform(X_train.values)
-X_test_tf_idf_vectorizer = tf_idf_vectorizer.fit_transform(X_test.values)
-print("Shape of dataset after converting into tf-idf is ",X_train_tf_idf_vectorizer.get_shape())
-print("Shape of dataset after converting into tf-idf is ",X_test_tf_idf_vectorizer.get_shape())
+X_test_tf_idf_vectorizer = tf_idf_vectorizer.transform(X_test.values)
+
+print("Shape of dataset after converting into tf-idf is ", X_train_tf_idf_vectorizer.get_shape())
+print("Shape of dataset after converting into tf-idf is ", X_test_tf_idf_vectorizer.get_shape())
 
 #%%
 # Normalize Tf-Idf Train and Test Data
@@ -334,7 +336,7 @@ print(X_train_tfidf_word2vec.shape)
 print(X_test_tfidf_word2vec.shape)
 
 #%%
-trained_KNN_Model = KNN_train_simple_cv(X_train_bow, Y_train)
+auc_score_bow_test, accuracy_bow_test = KNN_train_simple_cv(X_train_bow, Y_train, X_test_bow, Y_test)
 
 #%%[markdown]
 # Best K found after cross-validation is 9. 
@@ -344,6 +346,12 @@ trained_KNN_Model = KNN_train_simple_cv(X_train_bow, Y_train)
 
 #%%
 # AUC and Accuracy of Test Data
-test_bow_results = KNN_test(trained_KNN_Model, X_test_bow, Y_test)
+# test_bow_results = KNN_test(trained_KNN_Model, X_test_bow, Y_test)
 
 #%%
+# print(test_bow_results)
+# %%
+auc_score_tf_idf_test, accuracy_tf_idf_test = KNN_train_simple_cv(X_train_tfidf, Y_train, X_test_tfidf, Y_test)
+
+# print(f"AUC Score (Test): {auc_score_tf_idf_test}")
+# print(f"Accuracy (Test): {accuracy_tf_idf_test}")

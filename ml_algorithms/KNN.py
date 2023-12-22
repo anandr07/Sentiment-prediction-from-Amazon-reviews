@@ -11,22 +11,8 @@ from sklearn.metrics import confusion_matrix, roc_auc_score, accuracy_score, roc
 import matplotlib.pyplot as plt
 import numpy as np 
 from sklearn.model_selection import train_test_split 
-
-#%%
-#%%[markdown]
-# Here I have implemented KNN algorithm using sklearn using BOW, tf-idf, Average word2vec and tf-idf word2vec
-
-# %%
-import warnings
-warnings.filterwarnings("ignore")
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import KFold
-from sklearn.model_selection import cross_val_score
-from sklearn.metrics import confusion_matrix, roc_auc_score, accuracy_score, roc_curve, auc
-import matplotlib.pyplot as plt
-import numpy as np 
-from sklearn.model_selection import train_test_split 
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics import ConfusionMatrixDisplay
 
 #%%
 #find knn to simple cross validation with Brute Force and KD-Tree
@@ -35,7 +21,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 import matplotlib.pyplot as plt
 
-def KNN_train_simple_cv(X_train, Y_train):
+def KNN_train_simple_cv(X_train, Y_train, X_test, Y_test):
     X_tr, X_cv, Y_tr, Y_cv = train_test_split(X_train, Y_train, test_size=0.33, random_state=0)
 
     k = []
@@ -109,33 +95,21 @@ def KNN_train_simple_cv(X_train, Y_train):
     plt.xlabel('Predicted Label')
     plt.ylabel('True Label')
 
-    # Display values inside the confusion matrix
-    for i in range(cm.shape[0]):
-        for j in range(cm.shape[1]):
-            plt.text(j, i, str(cm[i, j]), ha='center', va='center', color='red')
-
     plt.show()
 
-    return knn
-
-#%%
-
-def KNN_test(trained_KNN_Model, X_test, Y_test):
-    threshold = 0.5
-    prob_test = trained_KNN_Model.predict_proba(X_test)[:, 1]
+    prob_test = knn.predict_proba(X_test)[:, 1]
     binary_preds_test = (prob_test > threshold).astype(int)
     cm = confusion_matrix(Y_test, binary_preds_test)
 
-    # Display values inside the confusion matrix
-    for i in range(cm.shape[0]):
-        for j in range(cm.shape[1]):
-            plt.text(j, i, str(cm[i, j]), ha='center', va='center', color='red')
-
-    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Greens)
+    # Use ConfusionMatrixDisplay for visualization
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=[0, 1])
+    disp.plot()
     plt.title('Confusion Matrix Test')
-    plt.colorbar()
-    plt.xlabel('Predicted Label')
-    plt.ylabel('True Label')
+    plt.show()  
+
+    print(Y_test,"\n")
+    print(prob_test,"\n")
+    print(binary_preds_test,"\n")
 
     # Calculate and print AUC score
     auc_score = roc_auc_score(Y_test, prob_test)
@@ -145,6 +119,7 @@ def KNN_test(trained_KNN_Model, X_test, Y_test):
     accuracy = accuracy_score(Y_test, binary_preds_test)
     print(f"Accuracy (Test): {accuracy}")
 
-    plt.show()  
-
     return auc_score, accuracy
+
+
+#%%
