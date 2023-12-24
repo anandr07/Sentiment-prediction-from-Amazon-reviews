@@ -57,6 +57,7 @@ from tqdm import tqdm
 from sklearn.preprocessing import LabelEncoder
 from data_preprocessing import clean_text, preprocess_text, sentence_to_words
 from ml_algorithms.KNN import KNN_train_simple_cv
+from ml_algorithms.NaiveBayes import NaiveBayes_train_simple_cv
 from sklearn import preprocessing
 from sklearn.preprocessing import Normalizer
 
@@ -335,6 +336,9 @@ X_test_tfidf_word2vec=preprocessing.normalize(X_test_tfidf_word2vec)
 print(X_train_tfidf_word2vec.shape)
 print(X_test_tfidf_word2vec.shape)
 
+#%%[markdown]
+# KNN on Bag of Words
+
 #%%
 auc_score_bow_test, accuracy_bow_test = KNN_train_simple_cv(X_train_bow, Y_train, X_test_bow, Y_test)
 
@@ -350,8 +354,48 @@ auc_score_bow_test, accuracy_bow_test = KNN_train_simple_cv(X_train_bow, Y_train
 
 #%%
 # print(test_bow_results)
+
+#%%[markdown]
+# KNN on tf-idf
+
 # %%
 auc_score_tf_idf_test, accuracy_tf_idf_test = KNN_train_simple_cv(X_train_tfidf, Y_train, X_test_tfidf, Y_test)
 
 # print(f"AUC Score (Test): {auc_score_tf_idf_test}")
 # print(f"Accuracy (Test): {accuracy_tf_idf_test}")
+
+#%%[markdown]
+# KNN on word2vec 
+
+#%%
+auc_score_word2vec_test, accuracy_bword2vec_test = KNN_train_simple_cv(X_train_tfidf_word2vec, Y_train_tfidf_wor2vec, X_test_tfidf_word2vec, Y_test_tfidf_wor2vec)
+
+
+#%%
+# Naive Bayes from here
+#%%[markdown]
+# NaiveBayes on Bag of Words
+
+#%%
+auc_score_bow_test_NB, accuracy_bow_test_NB = NaiveBayes_train_simple_cv(X_train_bow, Y_train, X_test_bow, Y_test)
+
+#%%[markdown]
+# Best K found after cross-validation is . 
+#  - AUC Score (CV):  Accuracy (CV): 
+
+# Recording the AUC and Accuracy of Test Data
+
+#%%[markdown]
+# NaiveBayes on tf-idf
+
+# %%
+auc_score_tf_idf_test_NB, accuracy_tf_idf_test_NB = NaiveBayes_train_simple_cv(X_train_tfidf, Y_train, X_test_tfidf, Y_test)
+
+# print(f"AUC Score (Test): {auc_score_tf_idf_test}")
+# print(f"Accuracy (Test): {accuracy_tf_idf_test}")
+
+#%%[markdown]
+# NaiveBayes on word2vec 
+
+#%%
+auc_score_word2vec_test_NB, accuracy_bword2vec_test_NB = NaiveBayes_train_simple_cv(X_train_tfidf_word2vec, Y_train_tfidf_wor2vec, X_test_tfidf_word2vec, Y_test_tfidf_wor2vec)
