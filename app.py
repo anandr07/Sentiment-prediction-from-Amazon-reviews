@@ -1,5 +1,4 @@
 from flask import Flask, jsonify, request
-import numpy as np
 from sklearn.externals import joblib
 import pandas as pd
 import numpy as np
@@ -10,12 +9,10 @@ import re
 from sklearn.feature_extraction.text import CountVectorizer
 
 
-# https://www.tutorialspoint.com/flask
 import flask
 app = Flask(__name__)
 
 
-###################################################
 def decontracted(phrase):
     # specific
     phrase = re.sub(r"won't", "will not", phrase)
@@ -56,10 +53,8 @@ def clean_text(sentence):
     sentence = decontracted(sentence)
     sentence = re.sub("\S*\d\S*", "", sentence).strip()
     sentence = re.sub('[^A-Za-z]+', ' ', sentence)
-    # https://gist.github.com/sebleier/554280
     sentence = ' '.join(e.lower() for e in sentence.split() if e.lower() not in stopwords)
     return sentence.strip()
-###################################################
 
 
 @app.route('/')
