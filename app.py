@@ -6,11 +6,11 @@ import re
 app = Flask(__name__)
 
 def decontracted(phrase):
-    # specific
+    # Specific
     phrase = re.sub(r"won't", "will not", phrase)
     phrase = re.sub(r"can\'t", "can not", phrase)
 
-    # general
+    # General
     phrase = re.sub(r"n\'t", " not", phrase)
     phrase = re.sub(r"\'re", " are", phrase)
     phrase = re.sub(r"\'s", " is", phrase)
@@ -58,7 +58,7 @@ def predict():
     review_text = clean_text(to_predict_list['review_text'])
     pred = clf.predict(count_vect.transform([review_text]))
     prediction = "Positive" if pred[0] else "Negative"
-    return jsonify({'prediction': prediction})
+    return render_template('index.html', prediction=prediction)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)

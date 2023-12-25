@@ -1,14 +1,101 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Fine Food Reviews: Sentiment Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 50px;
+        }
+
+        h3 {
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Added styles for the result section */
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #eee;
+        }
+
+        .positive {
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        .negative {
+            color: #f44336;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
 <body>
     <h3>Amazon Fine Food Reviews: Sentiment Analysis</h3>
 
-<div>
-  <form action="/predict" method="POST">
-    <label for="review_text">Review Text</label>
-      <textarea name="review_text" rows="10" cols="30"></textarea>>
-    <br>
-    <input type="submit" value="Submit">
-  </form>
-</div>
+    <div>
+        <form action="/predict" method="POST">
+            <label for="review_text">Review Text</label>
+            <textarea name="review_text" rows="10" cols="30" required></textarea>
+            <br>
+            <input type="submit" value="Submit">
+        </form>
+
+        <!-- Result Section -->
+        {% if prediction %}
+        <div class="result">
+            <h4>Prediction:</h4>
+            <p class="{{ 'positive' if prediction == 'Positive' else 'negative' }}">{{ prediction }}</p>
+        </div>
+        {% endif %}
+        <!-- End Result Section -->
+    </div>
 </body>
+
 </html>
