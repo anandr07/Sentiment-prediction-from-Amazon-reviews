@@ -39,7 +39,7 @@ stopwords = set(['br', 'the', 'i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'o
 
 def clean_text(sentence):
     sentence = re.sub(r"http\S+", "", sentence)
-    sentence = BeautifulSoup(sentence, 'lxml').get_text()
+    sentance = BeautifulSoup(sentence, 'html.parser').get_text()
     sentence = decontracted(sentence)
     sentence = re.sub("\S*\d\S*", "", sentence).strip()
     sentence = re.sub('[^A-Za-z]+', ' ', sentence)
