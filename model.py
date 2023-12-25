@@ -86,12 +86,22 @@ for sentence in final['Text'].values:
 
 count_vect = CountVectorizer()
 count_vect.fit(preprocessed_reviews)
-joblib.dump(count_vect, 'count_vect.pkl')
+joblib.dump(count_vect, 'CountVectorizer.pkl')
+print("----------CountVectorizer.pkl file generated----------")
 X = count_vect.transform(preprocessed_reviews)
-print(X.shape)
+# print(X.shape)
 Y = final['Score'].values
 clf = linear_model.SGDClassifier(max_iter=1000, tol=1e-3, eta0=0.1, alpha=0.001)
 clf.fit(X, Y)
-joblib.dump(clf, 'model.pkl')
+joblib.dump(clf, 'Model(SGDC).pkl')
+print("----------Model(SGDC).pkl file generated----------")
 
-print(predict('Have been having this since years. Much better option than Bru.Nescafe still managing to do well in market with all the competitors breathing down it\'s neck. Good one!'))
+
+pos_review = 'I have bought several of the Vitality canned dog food products and have found them all to be of good quality.\
+The product looks more like a stew than a processed meat and it smells better. My Labrador is finicky and she appreciates this product better than  most.'
+
+neg_review = 'Product arrived labeled as Jumbo Salted Peanuts...the peanuts were actually small sized unsalted. \
+Not sure if this was an error or if the vendor intended to represent the product as "Jumbo".'
+
+if predict(pos_review) == "Positive" and predict(neg_review) == "Negative":
+    print("----------Working fine, ready to deploy----------")
