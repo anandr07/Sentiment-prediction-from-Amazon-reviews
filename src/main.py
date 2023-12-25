@@ -57,8 +57,8 @@ from tqdm import tqdm
 from sklearn.preprocessing import LabelEncoder
 from data_preprocessing import clean_text, preprocess_text, sentence_to_words
 from ml_algorithms.KNN import KNN_train_simple_cv
-from ml_algorithms.NaiveBayesOLD import NaiveBayes_train_simple_cv
-from ml_algorithms.SGDClassifier_old import SGDClassifier_train_simple_cv
+from ml_algorithms.NaiveBayes import NaiveBayes_train_simple_cv
+from ml_algorithms.SGDClassifier import SGDClassifier_train_simple_cv
 from sklearn import preprocessing
 from sklearn.preprocessing import Normalizer
 
@@ -341,19 +341,19 @@ print(X_test_tfidf_word2vec.shape)
 # KNN on Bag of Words
 
 #%%
-auc_score_bow_test, accuracy_bow_test = KNN_train_simple_cv(X_train_bow, Y_train, X_test_bow, Y_test)
+auc_score_bow_test_KNN, accuracy_bow_test_KNN = KNN_train_simple_cv(X_train_bow, Y_train, X_test_bow, Y_test)
 
 #%%[markdown]
 # KNN on tf-idf
 
 #%%
-auc_score_tf_idf_test, accuracy_tf_idf_test = KNN_train_simple_cv(X_train_tfidf, Y_train, X_test_tfidf, Y_test)
+auc_score_tf_idf_test_KNN, accuracy_tf_idf_test_KNN = KNN_train_simple_cv(X_train_tfidf, Y_train, X_test_tfidf, Y_test)
 
 #%%[markdown]
 # KNN on Tf-Idf word2vec 
 
 #%%
-auc_score_word2vec_test, accuracy_bword2vec_test = KNN_train_simple_cv(X_train_tfidf_word2vec, Y_train_tfidf_wor2vec, X_test_tfidf_word2vec, Y_test_tfidf_wor2vec)
+auc_score_word2vec_test_KNN, accuracy_bword2vec_test_KNN = KNN_train_simple_cv(X_train_tfidf_word2vec, Y_train_tfidf_wor2vec, X_test_tfidf_word2vec, Y_test_tfidf_wor2vec)
 
 #%%
 # Naive Bayes from here
