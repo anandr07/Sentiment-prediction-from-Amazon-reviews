@@ -1,7 +1,6 @@
 import pandas as pd
-import numpy as np
 from sklearn import linear_model
-from sklearn.externals import joblib
+import joblib
 import sqlite3
 from bs4 import BeautifulSoup
 import re
@@ -51,7 +50,7 @@ def clean_text(sentance):
     sentance = re.sub(r"http\S+", "", sentance)
     sentance = BeautifulSoup(sentance, 'lxml').get_text()
     sentance = decontracted(sentance)
-    sentance = re.sub("\S*\d\S*", "", sentance).strip()
+    sentance = re.sub(r"\S*\d\S*", "", sentance).strip()
     sentance = re.sub('[^A-Za-z]+', ' ', sentance)
     sentance = ' '.join(e.lower() for e in sentance.split() if e.lower() not in stopwords)
     return sentance.strip()
@@ -71,7 +70,7 @@ def predict(string):
     return prediction
 
 
-con = sqlite3.connect('database.sqlite')
+con = sqlite3.connect('data\\database.sqlite')
 filtered_data = pd.read_sql_query(""" SELECT * FROM Reviews WHERE Score != 3 LIMIT 10000""", con)
 filtered_data['Score'] = filtered_data['Score'].map(partition)
 sorted_data = filtered_data.sort_values('ProductId', axis=0, ascending=True, inplace=False, kind='quicksort', na_position='last')
