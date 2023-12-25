@@ -5,6 +5,7 @@ import sqlite3
 from bs4 import BeautifulSoup
 import re
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn import linear_model 
 
 
 def decontracted(phrase):
@@ -48,7 +49,7 @@ stopwords= set(['br', 'the', 'i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ou
 
 def clean_text(sentance):
     sentance = re.sub(r"http\S+", "", sentance)
-    sentance = BeautifulSoup(sentance, 'lxml').get_text()
+    sentance = BeautifulSoup(sentance, 'html.parser').get_text()
     sentance = decontracted(sentance)
     sentance = re.sub(r"\S*\d\S*", "", sentance).strip()
     sentance = re.sub('[^A-Za-z]+', ' ', sentance)
