@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amazon Fine Food Reviews: Sentiment Analysis</title>
     <style>
-
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -16,7 +15,6 @@
 
         h3 {
             color: #333;
-            font-size: 28px; 
         }
 
         form {
@@ -75,17 +73,6 @@
             color: #f44336;
             font-weight: bold;
         }
-
-        /* Added styles for the links section */
-        .links {
-            margin-top: 20px;
-        }
-
-        .links a {
-            margin-right: 20px;
-            text-decoration: none;
-            color: #333;
-        }
     </style>
 </head>
 
@@ -94,7 +81,7 @@
 
     <div>
         <form action="/predict" method="POST">
-            <label for="review_text">Enter Review Text</label>
+            <label for="review_text">Review Text</label>
             <textarea name="review_text" rows="10" cols="30" required></textarea>
             <br>
             <input type="submit" value="Submit">
@@ -108,15 +95,6 @@
         </div>
         {% endif %}
         <!-- End Result Section -->
-
-        <!-- Links Section -->
-        <div class="links">
-            <h4>Sample Links:</h4>
-            <a href="https://www.amazon.com/" target="_blank">amazon.com</a>
-            <a href="https://www.amazon.com/Bauducco-Mini-Panettone-Holiday-Traditional/dp/B0C7SS82MW/ref=cm_cr_arp_d_product_top?ie=UTF8&th=1" target="_blank">Bauducco Mini Panettone - Moist & Fresh Holiday Cake</a>
-            <a href="https://www.amazon.com/Lays-Barbecue-Flavored-Potato-Chips/dp/B0792MBN94/ref=cm_cr_arp_d_product_top?ie=UTF8" target="_blank">Lay's Potato Chips Barbecue Pack</a>
-        </div>
-        <!-- End Links Section -->
     </div>
 </body>
 

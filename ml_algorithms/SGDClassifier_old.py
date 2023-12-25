@@ -1,28 +1,26 @@
 #%%
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics import roc_auc_score, accuracy_score, roc_curve, confusion_matrix
+from sklearn.linear_model import SGDClassifier
+from sklearn.metrics import roc_auc_score, accuracy_score, confusion_matrix
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay
-from sklearn.naive_bayes import GaussianNB
 
 # Assuming X_train_tfidf, Y_train, X_test_tfidf, Y_test are loaded
 
-# Train Multinomial Naive Bayes model and get AUC score and accuracy
-def NaiveBayes_train_simple_cv(X_train, Y_train, X_test, Y_test):
+# Train SGDClassifier model and get AUC score and accuracy
+def SGDClassifier_train_simple_cv(X_train, Y_train, X_test, Y_test):
     # Split the training data for cross-validation
     X_tr, X_cv, Y_tr, Y_cv = train_test_split(X_train, Y_train, test_size=0.33, random_state=0)
 
     # Initialize the classifier
-    nb = GaussianNB()
+    sgd_classifier = SGDClassifier(max_iter=1000, tol=1e-3, eta0=0.1, alpha=0.001)
 
     # Train the classifier
-    nb.fit(X_tr, Y_tr)
+    sgd_classifier.fit(X_tr, Y_tr)
 
     # Predict probabilities for CV and training sets
-    probs_cv = nb.predict_proba(X_cv)[:, 1]
-    probs_train = nb.predict_proba(X_tr)[:, 1]
+    probs_cv = sgd_classifier.predict_proba(X_cv)[:, 1]
+    probs_train = sgd_classifier.predict_proba(X_tr)[:, 1]
 
     # Calculate AUC score for CV and training sets
     auc_score_cv = roc_auc_score(Y_cv, probs_cv)
@@ -48,7 +46,7 @@ def NaiveBayes_train_simple_cv(X_train, Y_train, X_test, Y_test):
     plt.show()
 
     # Confusion Matrix for test set
-    prob_test = nb.predict_proba(X_test)[:, 1]
+    prob_test = sgd_classifier.predict_proba(X_test)[:, 1]
     binary_preds_test = (prob_test > threshold).astype(int)
     cm = confusion_matrix(Y_test, binary_preds_test)
 
@@ -56,7 +54,7 @@ def NaiveBayes_train_simple_cv(X_train, Y_train, X_test, Y_test):
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=[0, 1])
     disp.plot()
     plt.title('Confusion Matrix Test')
-    plt.show()  
+    plt.show()
 
     print(Y_test, "\n")
     print(prob_test, "\n")
@@ -71,3 +69,5 @@ def NaiveBayes_train_simple_cv(X_train, Y_train, X_test, Y_test):
     print(f"Accuracy (Test): {accuracy}")
 
     return auc_score, accuracy
+
+# SGDClassifier_train_simple_cv(X_train_tfidf, Y_train, X_test_tfidf, Y_test)

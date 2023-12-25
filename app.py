@@ -57,7 +57,7 @@ def predict():
     to_predict_list = request.form.to_dict()
     review_text = clean_text(to_predict_list['review_text'])
     pred = clf.predict(count_vect.transform([review_text]))
-    prediction = "Positive" if pred[0] else "Negative"
+    prediction = "Positive Review" if pred[0] else "Negative Review"
     return render_template('index.html', prediction=prediction)
 
 if __name__ == '__main__':

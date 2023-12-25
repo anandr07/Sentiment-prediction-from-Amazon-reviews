@@ -57,7 +57,8 @@ from tqdm import tqdm
 from sklearn.preprocessing import LabelEncoder
 from data_preprocessing import clean_text, preprocess_text, sentence_to_words
 from ml_algorithms.KNN import KNN_train_simple_cv
-from ml_algorithms.NaiveBayes import NaiveBayes_train_simple_cv
+from ml_algorithms.NaiveBayesOLD import NaiveBayes_train_simple_cv
+from ml_algorithms.SGDClassifier_old import SGDClassifier_train_simple_cv
 from sklearn import preprocessing
 from sklearn.preprocessing import Normalizer
 
@@ -238,14 +239,14 @@ tf_idf_vectorizer = TfidfVectorizer(ngram_range=(1, 2))
 X_train_tf_idf_vectorizer = tf_idf_vectorizer.fit_transform(X_train.values)
 X_test_tf_idf_vectorizer = tf_idf_vectorizer.transform(X_test.values)
 
-print("Shape of dataset after converting into tf-idf is ", X_train_tf_idf_vectorizer.get_shape())
-print("Shape of dataset after converting into tf-idf is ", X_test_tf_idf_vectorizer.get_shape())
+print("Shape of train dataset after converting into tf-idf is ", X_train_tf_idf_vectorizer.get_shape())
+print("Shape of test dataset after converting into tf-idf is ", X_test_tf_idf_vectorizer.get_shape())
 
 #%%
 # Normalize Tf-Idf Train and Test Data
 X_train_tfidf=preprocessing.normalize(X_train_tf_idf_vectorizer)
 X_test_tfidf=preprocessing.normalize(X_test_tf_idf_vectorizer)
-print("The shape of out text BOW vectorizer ",X_train_tfidf.get_shape())
+print("Train Data Size: ",X_train_tfidf.get_shape())
 print("Test Data Size: ",X_test_tfidf.shape)
 
 #%%[markdown]
@@ -304,10 +305,10 @@ print(X_test_avg_wor2vec.shape)
 tfidf_model = TfidfVectorizer()
 tf_idf_matrix = tfidf_model.fit_transform(raw_data['Clean_Text'].values)
 # we are converting a dictionary with word as a key, and the idf as a value
-dictionary = dict(zip(tfidf_model.get_feature_names(), list(tfidf_model.idf_)))
+dictionary = dict(zip(tfidf_model.get_feature_names_out(), list(tfidf_model.idf_)))
 
 # TF-IDF weighted Word2Vec
-tfidf_feat = tfidf_model.get_feature_names() # tfidf words/col-names
+tfidf_feat = tfidf_model.get_feature_names_out() # tfidf words/col-names
 # final_tf_idf is the sparse matrix with row= sentence, col=word and cell_val = tfidf
 
 tfidf_sent_vectors = []; # the tfidf-w2v for each sentence/review is stored in this list
@@ -343,36 +344,20 @@ print(X_test_tfidf_word2vec.shape)
 auc_score_bow_test, accuracy_bow_test = KNN_train_simple_cv(X_train_bow, Y_train, X_test_bow, Y_test)
 
 #%%[markdown]
-# Best K found after cross-validation is 9. 
-# 9 - AUC Score (CV): 0.7960000529291101  Accuracy (CV): 0.862242720164909
-
-# Recording the AUC and Accuracy of Test Data
-
-#%%
-# AUC and Accuracy of Test Data
-# test_bow_results = KNN_test(trained_KNN_Model, X_test_bow, Y_test)
-
-#%%
-# print(test_bow_results)
-
-#%%[markdown]
 # KNN on tf-idf
 
-# %%
+#%%
 auc_score_tf_idf_test, accuracy_tf_idf_test = KNN_train_simple_cv(X_train_tfidf, Y_train, X_test_tfidf, Y_test)
 
-# print(f"AUC Score (Test): {auc_score_tf_idf_test}")
-# print(f"Accuracy (Test): {accuracy_tf_idf_test}")
-
 #%%[markdown]
-# KNN on word2vec 
+# KNN on Tf-Idf word2vec 
 
 #%%
 auc_score_word2vec_test, accuracy_bword2vec_test = KNN_train_simple_cv(X_train_tfidf_word2vec, Y_train_tfidf_wor2vec, X_test_tfidf_word2vec, Y_test_tfidf_wor2vec)
 
-
 #%%
 # Naive Bayes from here
+
 #%%[markdown]
 # NaiveBayes on Bag of Words
 
@@ -380,22 +365,34 @@ auc_score_word2vec_test, accuracy_bword2vec_test = KNN_train_simple_cv(X_train_t
 auc_score_bow_test_NB, accuracy_bow_test_NB = NaiveBayes_train_simple_cv(X_train_bow, Y_train, X_test_bow, Y_test)
 
 #%%[markdown]
-# Best K found after cross-validation is . 
-#  - AUC Score (CV):  Accuracy (CV): 
-
-# Recording the AUC and Accuracy of Test Data
-
-#%%[markdown]
 # NaiveBayes on tf-idf
 
 # %%
 auc_score_tf_idf_test_NB, accuracy_tf_idf_test_NB = NaiveBayes_train_simple_cv(X_train_tfidf, Y_train, X_test_tfidf, Y_test)
 
-# print(f"AUC Score (Test): {auc_score_tf_idf_test}")
-# print(f"Accuracy (Test): {accuracy_tf_idf_test}")
-
 #%%[markdown]
-# NaiveBayes on word2vec 
+# NaiveBayes on Tf-Idf word2vec 
 
 #%%
-auc_score_word2vec_test_NB, accuracy_bword2vec_test_NB = NaiveBayes_train_simple_cv(X_train_tfidf_word2vec, Y_train_tfidf_wor2vec, X_test_tfidf_word2vec, Y_test_tfidf_wor2vec)
+auc_score_tfidf_word2vec_test_NB, accuracy_tfidf_word2vec_test_NB = NaiveBayes_train_simple_cv(X_train_tfidf_word2vec, Y_train_tfidf_wor2vec, X_test_tfidf_word2vec, Y_test_tfidf_wor2vec)
+
+#%%
+# SGD Classifier from here
+
+#%%[markdown]
+# SGD Classifier on Bag of Words
+
+#%%
+auc_score_bow_test_SGDC, accuracy_bow_test_SGDC = SGDClassifier_train_simple_cv(X_train_bow, Y_train, X_test_bow, Y_test)
+
+#%%[markdown]
+# SGD Classifier on tf-idf
+
+# %%
+auc_score_tf_idf_test_SGDC, accuracy_tf_idf_test_SGDC = SGDClassifier_train_simple_cv(X_train_tfidf, Y_train, X_test_tfidf, Y_test)
+
+#%%[markdown]
+# SGD Classifier on Tf-Idf word2vec 
+
+#%%
+auc_score_tfidf_word2vec_test_SGDC, accuracy_tfidf_word2vec_test_SGDC = SGDClassifier_train_simple_cv(X_train_tfidf_word2vec, Y_train_tfidf_wor2vec, X_test_tfidf_word2vec, Y_test_tfidf_wor2vec)

@@ -1,4 +1,8 @@
 #%%
+from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import RandomizedSearchCV
+from scipy.stats import randint
+from sklearn.metrics import make_scorer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import roc_auc_score, accuracy_score, roc_curve, confusion_matrix
@@ -9,20 +13,39 @@ from sklearn.naive_bayes import GaussianNB
 
 # Assuming X_train_tfidf, Y_train, X_test_tfidf, Y_test are loaded
 
-# Train Multinomial Naive Bayes model and get AUC score and accuracy
-def NaiveBayes_train_simple_cv(X_train, Y_train, X_test, Y_test):
+# Define the parameter grid for Random Search CV
+param_dist = {
+    'var_smoothing': randint(1e-9, 1e-1),
+}
+
+# Define custom scorer for roc_auc_score
+roc_auc_scorer = make_scorer(roc_auc_score, greater_is_better=True, needs_proba=True)
+
+# Train Gaussian Naive Bayes model and perform Random Search CV
+def NaiveBayes_train_random_search_cv(X_train, Y_train, X_test, Y_test):
     # Split the training data for cross-validation
     X_tr, X_cv, Y_tr, Y_cv = train_test_split(X_train, Y_train, test_size=0.33, random_state=0)
 
     # Initialize the classifier
     nb = GaussianNB()
 
-    # Train the classifier
-    nb.fit(X_tr, Y_tr)
+    # Define RandomizedSearchCV
+    random_search = RandomizedSearchCV(nb, param_distributions=param_dist, n_iter=10, scoring=roc_auc_scorer, cv=3, random_state=0)
+
+    # Perform RandomizedSearchCV
+    random_search.fit(X_tr, Y_tr)
+
+    # Get the best hyperparameters
+    best_params = random_search.best_params_
+    print(f"Best Hyperparameters: {best_params}")
+
+    # Use the best hyperparameters to train the final model
+    best_nb = GaussianNB(var_smoothing=best_params['var_smoothing'])
+    best_nb.fit(X_tr, Y_tr)
 
     # Predict probabilities for CV and training sets
-    probs_cv = nb.predict_proba(X_cv)[:, 1]
-    probs_train = nb.predict_proba(X_tr)[:, 1]
+    probs_cv = best_nb.predict_proba(X_cv)[:, 1]
+    probs_train = best_nb.predict_proba(X_tr)[:, 1]
 
     # Calculate AUC score for CV and training sets
     auc_score_cv = roc_auc_score(Y_cv, probs_cv)
@@ -48,7 +71,7 @@ def NaiveBayes_train_simple_cv(X_train, Y_train, X_test, Y_test):
     plt.show()
 
     # Confusion Matrix for test set
-    prob_test = nb.predict_proba(X_test)[:, 1]
+    prob_test = best_nb.predict_proba(X_test)[:, 1]
     binary_preds_test = (prob_test > threshold).astype(int)
     cm = confusion_matrix(Y_test, binary_preds_test)
 
@@ -71,3 +94,6 @@ def NaiveBayes_train_simple_cv(X_train, Y_train, X_test, Y_test):
     print(f"Accuracy (Test): {accuracy}")
 
     return auc_score, accuracy
+
+# Call the function with your data
+# NaiveBayes_train_random_search_cv(X_train_tfidf, Y_train, X_test_tfidf, Y_test)
