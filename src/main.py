@@ -57,8 +57,8 @@ from tqdm import tqdm
 from sklearn.preprocessing import LabelEncoder
 from data_preprocessing import clean_text, preprocess_text, sentence_to_words
 from ml_algorithms.KNN import KNN_train_simple_cv
-from ml_algorithms.NaiveBayes import NaiveBayes_train_simple_cv
-from ml_algorithms.SGDClassifier import SGDClassifier_train_simple_cv
+from ml_algorithms.NaiveBayes29 import NaiveBayes_train_simple_cv
+from ml_algorithms.SGDClassifier import SGDClassifier_train_random_search_cv
 from sklearn import preprocessing
 from sklearn.preprocessing import Normalizer
 
@@ -71,6 +71,12 @@ raw_data.head(10)
 
 #%%
 print(raw_data["Text"].head(10))
+
+
+#%%
+# Just for faster computation use 50000 rows 
+# ************************************Remove Later********************************************
+raw_data = raw_data[:10000]
 
 #%%
 raw_data.shape
@@ -299,7 +305,7 @@ print(X_train_avg_wor2vec.shape)
 print(X_test_avg_wor2vec.shape)
 
 #%%[markdown]
-## Tf-Idf Wword2vec 
+## Tf-Idf Word2vec 
 
 #%%
 tfidf_model = TfidfVectorizer()
@@ -383,16 +389,20 @@ auc_score_tfidf_word2vec_test_NB, accuracy_tfidf_word2vec_test_NB = NaiveBayes_t
 # SGD Classifier on Bag of Words
 
 #%%
-auc_score_bow_test_SGDC, accuracy_bow_test_SGDC = SGDClassifier_train_simple_cv(X_train_bow, Y_train, X_test_bow, Y_test)
+auc_score_bow_test_SGDC, accuracy_bow_test_SGDC = SGDClassifier_train_random_search_cv(X_train_bow, Y_train, X_test_bow, Y_test)
 
 #%%[markdown]
 # SGD Classifier on tf-idf
 
 # %%
-auc_score_tf_idf_test_SGDC, accuracy_tf_idf_test_SGDC = SGDClassifier_train_simple_cv(X_train_tfidf, Y_train, X_test_tfidf, Y_test)
+auc_score_tf_idf_test_SGDC, accuracy_tf_idf_test_SGDC = SGDClassifier_train_random_search_cv(X_train_tfidf, Y_train, X_test_tfidf, Y_test)
 
 #%%[markdown]
 # SGD Classifier on Tf-Idf word2vec 
 
 #%%
-auc_score_tfidf_word2vec_test_SGDC, accuracy_tfidf_word2vec_test_SGDC = SGDClassifier_train_simple_cv(X_train_tfidf_word2vec, Y_train_tfidf_wor2vec, X_test_tfidf_word2vec, Y_test_tfidf_wor2vec)
+auc_score_tfidf_word2vec_test_SGDC, accuracy_tfidf_word2vec_test_SGDC = SGDClassifier_train_random_search_cv(X_train_tfidf_word2vec, Y_train_tfidf_wor2vec, X_test_tfidf_word2vec, Y_test_tfidf_wor2vec)
+
+#%%[markdown]
+
+## KNN, Naive Bayes, and SGD Completed 

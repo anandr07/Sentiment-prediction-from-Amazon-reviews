@@ -1,51 +1,24 @@
-#%%
-from sklearn.linear_model import SGDClassifier
-from sklearn.model_selection import RandomizedSearchCV
-from scipy.stats import loguniform
-from sklearn.metrics import make_scorer
-from sklearn.linear_model import SGDClassifier
-from sklearn.metrics import roc_auc_score, accuracy_score, confusion_matrix
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.metrics import roc_auc_score, accuracy_score, roc_curve, confusion_matrix
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay
+from scipy import sparse
 
-# Assuming X_train_tfidf, Y_train, X_test_tfidf, Y_test are loaded
-
-# Define the parameter grid for Random Search CV
-param_dist = {
-    'alpha': loguniform(1e-6, 1e-1),
-    'eta0': [0.01, 0.1, 0.2, 0.5],
-}
-
-# Define custom scorer for roc_auc_score
-roc_auc_scorer = make_scorer(roc_auc_score, greater_is_better=True, needs_proba=True)
-
-# Train SGDClassifier model and perform Random Search CV
-# Train SGDClassifier model and perform Random Search CV
-def SGDClassifier_train_random_search_cv(X_train, Y_train, X_test, Y_test):
+# Train Multinomial Naive Bayes model and get AUC score and accuracy
+def NaiveBayes_train_simple_cv(X_train, Y_train, X_test, Y_test):
     # Split the training data for cross-validation
     X_tr, X_cv, Y_tr, Y_cv = train_test_split(X_train, Y_train, test_size=0.33, random_state=0)
 
     # Initialize the classifier
-    sgd_classifier = SGDClassifier(loss='log_loss', random_state=0)
+    nb = MultinomialNB()
 
-    # Define RandomizedSearchCV
-    random_search = RandomizedSearchCV(sgd_classifier, param_distributions=param_dist, n_iter=10, scoring=roc_auc_scorer, cv=3, random_state=0)
-
-    # Perform RandomizedSearchCV
-    random_search.fit(X_tr, Y_tr)
-
-    # Get the best hyperparameters
-    best_params = random_search.best_params_
-    print(f"Best Hyperparameters: {best_params}")
-
-    # Use the best hyperparameters to train the final model
-    best_sgd_classifier = random_search.best_estimator_
-    best_sgd_classifier.fit(X_tr, Y_tr)
+    # Train the classifier
+    nb.fit(X_tr, Y_tr)
 
     # Predict probabilities for CV and training sets
-    probs_cv = best_sgd_classifier.predict_proba(X_cv)[:, 1]
-    probs_train = best_sgd_classifier.predict_proba(X_tr)[:, 1]
+    probs_cv = nb.predict_proba(X_cv)[:, 1]
+    probs_train = nb.predict_proba(X_tr)[:, 1]
 
     # Calculate AUC score for CV and training sets
     auc_score_cv = roc_auc_score(Y_cv, probs_cv)
@@ -71,7 +44,7 @@ def SGDClassifier_train_random_search_cv(X_train, Y_train, X_test, Y_test):
     plt.show()
 
     # Confusion Matrix for test set
-    prob_test = best_sgd_classifier.predict_proba(X_test)[:, 1]
+    prob_test = nb.predict_proba(X_test)[:, 1]
     binary_preds_test = (prob_test > threshold).astype(int)
     cm = confusion_matrix(Y_test, binary_preds_test)
 
@@ -79,11 +52,7 @@ def SGDClassifier_train_random_search_cv(X_train, Y_train, X_test, Y_test):
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=[0, 1])
     disp.plot()
     plt.title('Confusion Matrix Test')
-    plt.show()
-
-    print(Y_test, "\n")
-    print(prob_test, "\n")
-    print(binary_preds_test, "\n")
+    plt.show()  
 
     # Calculate and print AUC score for test set
     auc_score = roc_auc_score(Y_test, prob_test)
@@ -94,6 +63,3 @@ def SGDClassifier_train_random_search_cv(X_train, Y_train, X_test, Y_test):
     print(f"Accuracy (Test): {accuracy}")
 
     return auc_score, accuracy
-
-# Call the function with your data
-# SGDClassifier_train_random_search_cv(X_train_bow, Y_train, X_test_bow, Y_test)

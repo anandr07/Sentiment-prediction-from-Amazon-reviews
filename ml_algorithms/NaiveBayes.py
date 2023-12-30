@@ -1,28 +1,31 @@
-#%%
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import roc_auc_score, accuracy_score, roc_curve, confusion_matrix
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay
-from sklearn.naive_bayes import GaussianNB
+from scipy import sparse
 
-# Assuming X_train_tfidf, Y_train, X_test_tfidf, Y_test are loaded
+# Assuming X_train, Y_train, X_test, Y_test are loaded and preprocessed
 
 # Train Multinomial Naive Bayes model and get AUC score and accuracy
 def NaiveBayes_train_simple_cv(X_train, Y_train, X_test, Y_test):
     # Split the training data for cross-validation
     X_tr, X_cv, Y_tr, Y_cv = train_test_split(X_train, Y_train, test_size=0.33, random_state=0)
 
+    # Convert sparse matrices to dense
+    X_tr_dense = X_tr.toarray()
+    X_cv_dense = X_cv.toarray()
+    X_test_dense = X_test.toarray()
+
     # Initialize the classifier
-    nb = GaussianNB()
+    nb = MultinomialNB()
 
     # Train the classifier
-    nb.fit(X_tr, Y_tr)
+    nb.fit(X_tr_dense, Y_tr)
 
     # Predict probabilities for CV and training sets
-    probs_cv = nb.predict_proba(X_cv)[:, 1]
-    probs_train = nb.predict_proba(X_tr)[:, 1]
+    probs_cv = nb.predict_proba(X_cv_dense)[:, 1]
+    probs_train = nb.predict_proba(X_tr_dense)[:, 1]
 
     # Calculate AUC score for CV and training sets
     auc_score_cv = roc_auc_score(Y_cv, probs_cv)
@@ -48,7 +51,7 @@ def NaiveBayes_train_simple_cv(X_train, Y_train, X_test, Y_test):
     plt.show()
 
     # Confusion Matrix for test set
-    prob_test = nb.predict_proba(X_test)[:, 1]
+    prob_test = nb.predict_proba(X_test_dense)[:, 1]
     binary_preds_test = (prob_test > threshold).astype(int)
     cm = confusion_matrix(Y_test, binary_preds_test)
 
@@ -71,3 +74,6 @@ def NaiveBayes_train_simple_cv(X_train, Y_train, X_test, Y_test):
     print(f"Accuracy (Test): {accuracy}")
 
     return auc_score, accuracy
+
+# Call the function with your data
+# NaiveBayes_train_simple_cv(X_train, Y_train, X_test, Y_test)
