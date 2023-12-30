@@ -74,9 +74,10 @@ print(raw_data["Text"].head(10))
 
 
 #%%
-# Just for faster computation use 50000 rows 
+# Just for faster computation use first 50000 rows 
 # ************************************Remove Later********************************************
 raw_data = raw_data[:10000]
+# ********************************************************************************************
 
 #%%
 raw_data.shape
