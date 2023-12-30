@@ -57,7 +57,7 @@ from tqdm import tqdm
 from sklearn.preprocessing import LabelEncoder
 from data_preprocessing import clean_text, preprocess_text, sentence_to_words
 from ml_algorithms.KNN import KNN_train_simple_cv
-from ml_algorithms.NaiveBayes29 import NaiveBayes_train_simple_cv
+from ml_algorithms.NaiveBayes import NaiveBayes_train_simple_cv
 from ml_algorithms.SGDClassifier import SGDClassifier_train_random_search_cv
 from sklearn import preprocessing
 from sklearn.preprocessing import Normalizer
