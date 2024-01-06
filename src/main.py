@@ -1,28 +1,29 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 #%%[markdown]
-# # Sentiment prediction from Amazon reviews
+## Sentiment prediction from Amazon reviews
 
-# ## About DataSet
+### About DataSet
 
-# This dataset consists of reviews of fine foods from amazon. The data span a period of more than 10 years, including all ~500,000 reviews up to October 2012. Reviews include product and user information, ratings, and a plain text review. It also includes reviews from all other Amazon categories.
-# 
-# Contents
-# 
-# database.csv: Contains the table 'Reviews'
-# 
-# Data includes:
-# 
-# Reviews from Oct 1999 - Oct 2012 568,454 reviews 256,059 users 74,258 products 260 users with > 50 reviews
+# This dataset consists of reviews of fine foods from Amazon. The data span a period of more than 10 years, including all ~500,000 reviews up to October 2012. Reviews include product and user information, ratings, and a plain text review. It also includes reviews from all other Amazon categories.
 
+### Contents
+
+# - **database.csv :** Contains the table 'Reviews'
+# - **Reviews.csv :** Pulled from the corresponding SQLite table named Reviews in database.sqlite
+
+### Data includes:
+
+# - Reviews from Oct 1999 - Oct 2012 
+# - 568,454 reviews 
+# - 256,059 users 
+# - 74,258 products 
+# - 260 users with > 50 reviews
 
 #%%
 import sys
 import os
 
 # Getting the current script's directory
-current_dir = os.path.dirname(os.path.abspath(__file__))
+current_dir = os.getcwd()
 
 # Adding the parent directory to the Python path
 sys.path.append(os.path.dirname(current_dir))
@@ -31,7 +32,6 @@ sys.path.append(os.path.dirname(current_dir))
 #%%
 #Importing Libraries
 
-import sys 
 import sqlite3
 import pandas as pd
 import numpy as np
@@ -72,11 +72,10 @@ raw_data.head(10)
 #%%
 print(raw_data["Text"].head(10))
 
-
 #%%
 # Just for faster computation use first 50000 rows 
 # ************************************Remove Later********************************************
-# raw_data = raw_data[:10000]
+raw_data = raw_data[:250000]
 # ********************************************************************************************
 
 #%%
@@ -407,3 +406,68 @@ auc_score_tfidf_word2vec_test_SGDC, accuracy_tfidf_word2vec_test_SGDC = SGDClass
 #%%[markdown]
 
 ## KNN, Naive Bayes, and SGD Completed 
+
+# %%
+import re
+import nltk
+import matplotlib.pyplot as plt
+from wordcloud import WordCloud
+import pandas as pd
+
+# Sample data (replace this with your actual X_train, Y_train data)
+# Assuming X_train contains text data and Y_train contains labels (1 for positive, 0 for negative)
+# Make sure to replace this with your actual data
+raw_data = pd.DataFrame({'Text': X_train[:50000], 'Review': Y_train[:50000]})
+
+# Drop rows with missing or NaN values in the 'Text' column
+raw_data = raw_data.dropna(subset=['Text'])
+
+# Function to generate and display word cloud
+def generate_word_cloud(text, title):
+    stopwords = set(nltk.corpus.stopwords.words("english"))
+    
+    # Specify the path to a font file available on your system
+    font_path = "C:/Windows/Fonts/Arial.ttf"  # Replace with the path to a font file on your system
+    
+    wordcloud = WordCloud(width=800, height=800,
+                          background_color='white',
+                          stopwords=stopwords,
+                          min_font_size=10,
+                          font_path=font_path)  # Specify the font path
+    
+    # Generate the word cloud
+    wordcloud.generate(text)
+
+    # Plot the WordCloud image
+    plt.figure(figsize=(8, 8), facecolor=None)
+    plt.imshow(wordcloud)
+    plt.axis("off")
+    plt.tight_layout(pad=0)
+
+    plt.title(title)
+    plt.show()
+
+# Function to get the top N most used words
+def get_top_words(text, n=10):
+    words = re.findall(r'\b\w+\b', text)
+    word_freq = nltk.FreqDist(words)
+    return word_freq.most_common(n)
+
+# Concatenate positive and negative reviews using apply and str.cat
+positive_reviews_text = raw_data[raw_data['Review'] == 1]['Text'].apply(lambda x: str(x)).str.cat(sep=' ')
+negative_reviews_text = raw_data[raw_data['Review'] == 0]['Text'].apply(lambda x: str(x)).str.cat(sep=' ')
+
+# Generate word clouds and display top 10 words
+generate_word_cloud(positive_reviews_text, 'Word Cloud for Positive Reviews')
+generate_word_cloud(negative_reviews_text, 'Word Cloud for Negative Reviews')
+
+top_positive_words = get_top_words(positive_reviews_text)
+top_negative_words = get_top_words(negative_reviews_text)
+
+print("Top 10 Most Used Positive Words:")
+print(top_positive_words)
+
+print("\nTop 10 Most Used Negative Words:")
+print(top_negative_words)
+
+# %%
