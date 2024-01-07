@@ -4,28 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sentiment Analysis of Amazon product reviews</title>
+    <title>Amazon Fine Food Reviews: Sentiment Analysis</title>
     <style>
 
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #FFCC99;
             text-align: center;
             margin: 50px;
         }
 
         h3 {
             color: #333;
-            font-size: 28px; 
+            font-size: 45px; 
+            padding-top: 5px;
         }
 
+        h4 {
+            color: #090808;
+            font-size: 22px; 
+            padding-top: 3px;
+        }
+
+
         form {
-            background-color: #fff;
+            background-color:#fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 50%;
             margin: auto;
+            margin-bottom: 10px;
         }
 
         label {
@@ -39,16 +48,17 @@
             padding: 10px;
             margin-bottom: 20px;
             box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            border: 1px solid #050505;
+            border-radius: 6px;
             resize: none;
+            font-size: 18px;
         }
 
         input[type="submit"] {
             background-color: #4caf50;
             color: #fff;
             padding: 10px 20px;
-            font-size: 16px;
+            font-size: 20px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -56,68 +66,168 @@
 
         input[type="submit"]:hover {
             background-color: #45a049;
+            font-size: 20px;
         }
 
         /* Added styles for the result section */
         .result {
-            margin-top: 20px;
-            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 0px;
+            padding-top: 2px;
+            padding-bottom: 2px;
             border-radius: 4px;
             background-color: #eee;
+            max-width: 30%; /* Limit the width of the result box */
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .positive {
             color: #4caf50;
             font-weight: bold;
+            font-size: 30px;
+            padding-top: 2px;
+            padding-bottom: 2px;
         }
 
         .negative {
             color: #f44336;
             font-weight: bold;
+            font-size: 30px;
+            padding-top: 2px;
+            padding-bottom: 2px;
         }
 
         /* Added styles for the links section */
-        .links {
-            margin-top: 20px;
+        .links-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
         }
 
-        .links a {
-            margin-right: 20px;
-            text-decoration: none;
-            color: #333;
+        .list-box {
+            width: calc(50% - 10px); /* Set the width of the list boxes to fit side by side with some space */
+            padding: 10px;
+            border: 1px solid #050505;
+            border-radius: 6px;
+            font-size: 18px;
+            overflow: hidden; /* Hide any overflow content */
+            margin-top: 2px;
+            margin-bottom: 2px; /* Add margin between the text boxes */
+            padding-top: 1px;
+            padding-bottom: 1px;
         }
+
+        .list-box h4 {
+            text-align: left;
+            color: #f44336; /* Change heading color to red */
+            font-weight: bold;
+            font-size: 20px; /* Adjust the font size as needed */
+            text-decoration: underline; /* Underline the headings */
+            margin-bottom: 5px; /* Add some space between heading and list */
+            padding-bottom: 3px; /* Add padding at the bottom of the heading */
+            border-bottom: none; /* Remove bottom border to eliminate underlines */
+            padding-top: 1px;
+        }
+
+        .list-box ul {
+            list-style: decimal; /* Change list style to decimal numbering */
+            padding-left: 20px; /* Indent the lists */
+            margin: 0; /* Remove default margin */
+        }
+
+        .list-box ul li {
+            text-align: left;
+        }
+
+        /* Additional margin between list boxes */
+        .list-box + .list-box {
+            margin-left: 20px; /* Add space between the text boxes */
+        }
+
+        .header {
+            position: absolute;
+            top: 1;
+            left: 2;
+    }
+
+    .header img {
+        width: 200px;
+    }
+
+    label[for="review_text"] {
+        font-size: 24px; /* Adjust the font size as needed */
+        text-align: center;
+    }
+
+    input[type="reset"] {
+            background-color: #f44336;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px; /* Add some spacing between buttons */
+        }
+
+        input[type="reset"]:hover {
+            background-color: #d32f2f;
+            font-size: 20px;
+        }
+    
     </style>
 </head>
 
 <body>
-    <h3>Sentiment Analysis of Amazon product reviews</h3>
+
+    <div class="header">
+        <a href="https://www.amazon.com/" target="_blank">
+        <img src="{{ url_for('static', filename='logo_amazon.png') }}" alt="Amazon Logo">
+        </a>
+      </div>
+    <h3><u><b>Product Review Sentiment Analyzer</b></u></h3>
 
     <div>
         <form action="/predict" method="POST">
-            <label for="review_text">Enter Review Text</label>
+            <label for="review_text">Enter Product Review</label>
             <textarea name="review_text" rows="10" cols="30" required></textarea>
             <br>
             <input type="submit" value="Submit">
+            <input type="reset" value="Clear">
         </form>
 
         <!-- Result Section -->
         {% if prediction %}
         <div class="result">
-            <h4>Prediction:</h4>
-            <p class="{{ 'positive' if prediction == 'Positive' else 'negative' }}">{{ prediction }}</p>
+            <h4><b>Prediction</b></h4>
+            <p class="{{ 'positive' if prediction == 'Positive Review' else 'negative' }}">{{ prediction }}</p>
         </div>
         {% endif %}
         <!-- End Result Section -->
 
         <!-- Links Section -->
-        <div class="links">
-            <h4>Sample Links:</h4>
-            <a href="https://www.amazon.com/" target="_blank">amazon.com</a>
-            <a href="https://www.amazon.com/Bauducco-Mini-Panettone-Holiday-Traditional/dp/B0C7SS82MW/ref=cm_cr_arp_d_product_top?ie=UTF8&th=1" target="_blank">Bauducco Mini Panettone - Moist & Fresh Holiday Cake</a>
-            <a href="https://www.amazon.com/Lays-Barbecue-Flavored-Potato-Chips/dp/B0792MBN94/ref=cm_cr_arp_d_product_top?ie=UTF8" target="_blank">Lay's Potato Chips Barbecue Pack</a>
+        <div class="links-container">
+            <div class="list-box">
+                <h4><b>Products Positive Reviews</b></h4>
+                <ul>
+                    <li><a href="https://www.amazon.com/product-reviews/B0C7SS82MW/ref=acr_dp_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar" target="_blank">Bauducco Mini Panettone - Moist & Fresh Holiday Cake</a></li>
+                    <li><a href="https://www.amazon.com/product-reviews/B0792MBN94/ref=acr_dp_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar" target="_blank">Lay's Potato Chips Barbecue Pack</a></li>
+                    <li><a href="https://www.amazon.com/product-reviews/B0C9R2P1BJ/ref=acr_dp_hist_4?ie=UTF8&filterByStar=four_star&reviewerType=all_reviews#reviews-filter-bar" target="_blank">Townesend's Treats Black Licorice </a></li>
+                </ul>
+            </div>
+            <div class="list-box">
+                <h4><b>Products Negative Reviews</b></h4>
+                <ul>
+                    <li><a href="https://www.amazon.com/product-reviews/B001EO5QW8/ref=acr_dp_hist_1?ie=UTF8&filterByStar=one_star&reviewerType=all_reviews#reviews-filter-bar" target="_blank">McCANN'S Instant Irish Oatmeal</a></li>
+                    <li><a href="https://www.amazon.com/product-reviews/B07CLDLHDQ/ref=acr_dp_hist_2?ie=UTF8&filterByStar=two_star&reviewerType=all_reviews#reviews-filter-bar" target="_blank">HERSHEY'S, KIT KAT and REESE'S Assorted Milk Chocolate</a></li>
+                    <li><a href="https://www.amazon.com/product-reviews/B003VC3M90/ref=acr_dp_hist_1?ie=UTF8&filterByStar=one_star&reviewerType=all_reviews#reviews-filter-bar" target="_blank">Walker's Shortbread Highlanders, Pure Butter Shortbread Cookies</a></li>
+                </ul>
+            </div>
         </div>
         <!-- End Links Section -->
     </div>
+
 </body>
 
 </html>
