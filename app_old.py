@@ -3,7 +3,7 @@ import joblib
 from bs4 import BeautifulSoup
 import re
 
-app = Flask(__name__, static_url_path='/static')
+app = Flask(__name__)
 
 def decontracted(phrase):
     # Specific
