@@ -224,6 +224,61 @@ label_encoder = LabelEncoder()
 raw_data['Review'] = label_encoder.fit_transform(raw_data['Review'])
 
 # %%
+## Visualizations
+
+import matplotlib.pyplot as plt
+
+# Visualization 1: Bar Chart for Review Distribution
+plt.figure(figsize=(8, 6))
+raw_data['Review'].value_counts().plot(kind='bar', color=['green', 'red'])
+plt.title('Distribution of Positive and Negative Reviews')
+plt.xlabel('Sentiment')
+plt.ylabel('Count')
+plt.xticks(rotation=0)
+plt.show()
+
+# %%
+# Visualization 2: Histogram showing distribution of review length
+raw_data['word_count'] = raw_data['Text'].apply(lambda x: len(str(x).split()))
+
+# Create a histogram of the word_count field
+plt.figure(figsize=(10, 6))
+plt.hist(raw_data['word_count'], bins=50, color='skyblue', edgecolor='black')
+plt.xlim(0,1520)
+plt.ylim(0,3300)
+plt.xlabel('Review Length')
+plt.ylabel('Word Count')
+plt.title('Distribution of Review Length', fontsize = 14, weight = 'bold')
+plt.show()
+
+# %%
+# Visualization 3: Boxplot for Helpfulness Score
+plt.figure(figsize=(10, 6))
+sns.boxplot(x='Review', y='HelpfulnessNumerator', data=raw_data)
+plt.title('Boxplot of Helpfulness Scores for Positive and Negative Reviews')
+plt.yticks(np.arange(min(raw_data['HelpfulnessNumerator']), max(raw_data['HelpfulnessNumerator']) + 10, 10))
+plt.xlabel('Sentiment')
+plt.ylabel('Helpfulness Numerator')
+plt.show()
+
+# %%
+# Visualization 4: Word Frequency Bar Chart - After stopword removal
+from collections import Counter
+
+def get_top_words(text, n):
+    words = text.split()
+    word_counts = Counter(words)
+    top_words = word_counts.most_common(n)
+    return top_words
+
+plt.figure(figsize=(12, 8))
+common_words = get_top_words(" ".join(raw_data['Clean_Text']), n=20)
+words, counts = zip(*common_words)
+plt.bar(words, counts, color='skyblue')
+plt.title('Top 20 Most Frequent Words')
+plt.xlabel('Words')
+plt.ylabel('Frequency')
+plt.xticks(rotation=45)
 
 #%%[markdown]
 # Train and Test Split
