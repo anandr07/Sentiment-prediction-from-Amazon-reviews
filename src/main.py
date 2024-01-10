@@ -64,7 +64,7 @@ from sklearn.preprocessing import Normalizer
 
 
 #%%
-raw_data = pd.read_csv("C:\Anand\Projects_GWU\Sentiment-prediction-from-Amazon-reviews\data\Reviews.csv")
+raw_data = pd.read_csv("E:\Data Science Projects\Sentiment-prediction-from-Amazon-reviews\data\Reviews.csv")
 
 #%%
 raw_data.head(10)
@@ -75,7 +75,7 @@ print(raw_data["Text"].head(10))
 #%%
 # Just for faster computation use first 50000 rows 
 # ************************************Remove Later********************************************
-raw_data = raw_data[:250000]
+raw_data = raw_data[:10000]
 # ********************************************************************************************
 
 #%%
@@ -143,6 +143,35 @@ print(raw_data.shape)
 # Apply clean_text function to clean the text column.
 raw_data['Clean_Text'] = raw_data['Text'].apply(lambda x: clean_text(x))
 
+# %%
+from wordcloud import WordCloud
+
+# Separate positive and negative reviews
+positive_reviews = raw_data[raw_data['Review'] == 'Positive']
+negative_reviews = raw_data[raw_data['Review'] == 'Negative']
+
+# Join the cleaned text for positive and negative reviews
+positive_text = ' '.join(positive_reviews['Clean_Text'])
+negative_text = ' '.join(negative_reviews['Clean_Text'])
+
+# Create WordCloud objects for positive and negative reviews
+positive_wordcloud = WordCloud(width=800, height=400, background_color='white').generate(positive_text)
+negative_wordcloud = WordCloud(width=800, height=400, background_color='black', colormap='Reds').generate(negative_text)
+
+# Plot word clouds for positive and negative reviews
+plt.figure(figsize=(12, 6))
+plt.subplot(1, 2, 1)
+plt.imshow(positive_wordcloud, interpolation='bilinear')
+plt.title('Positive Reviews Word Cloud')
+plt.axis('off')
+
+plt.subplot(1, 2, 2)
+plt.imshow(negative_wordcloud, interpolation='bilinear')
+plt.title('Negative Reviews Word Cloud')
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
 
 #%%
 print(raw_data["Text"].head(10))
@@ -193,6 +222,8 @@ label_encoder = LabelEncoder()
 
 # Fit and transform the "Review" column
 raw_data['Review'] = label_encoder.fit_transform(raw_data['Review'])
+
+# %%
 
 #%%[markdown]
 # Train and Test Split
