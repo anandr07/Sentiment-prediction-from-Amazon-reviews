@@ -35,10 +35,6 @@ The dataset includes:
 
 Instructions on how to use your project or any additional information.
 
-## License
-
-This project is licensed under the [License Name] - see the [LICENSE.md](LICENSE.md) file for details.
-
 ## Acknowledgments
 
 - Any credits or acknowledgments you want to include.
