@@ -64,7 +64,7 @@ The project initiates data analysis and machine learning by importing essential 
 Read CSV file into a Pandas DataFrame, display the first five rows and provide information about the dataset. It identifies the column on the basis of scores and dropping value above needed threshold and removing the duplicated values. The dataset initially has 568,454 reviews, and for the fast calculation we used 250,000 and after dropping rows with thresholdlimit its left with 230478 review and after removing the duplicate value 182,285 404,287 reviews. There are many duplicate value and and score above 3, dropping those rows.
 
 
-# Distribution of data points among output classes (Similar and Non Similar Questions
+# Distribution of data points among output classes
 - <b> Distribution of Duplicate and Non-duplicate reviews </b>
 
 - <b>Number of reviews above score given thresholds</b>
