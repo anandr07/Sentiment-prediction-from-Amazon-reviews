@@ -66,21 +66,14 @@ Read CSV file into a Pandas DataFrame, display the first five rows and provide i
 
 # Distribution of data points among output classes (Similar and Non Similar Questions
 - <b> Distribution of Duplicate and Non-duplicate reviews </b>
-  ![image](https://github.com/anandr07/Quora-Question-Pair-Similarity/assets/66896800/f7b9d6f6-a832-4443-83aa-27bdcd239590)
 
 - <b>Number of reviews above score given thresholds</b>
-  Analyzing the dataset reveals 537,929 unique qustions. About 20.78% of questions appear more than once, with the maximum repetition being 157 times.
-  
-  ![image](https://github.com/anandr07/Quora-Question-Pair-Similarity/assets/66896800/7ebc3018-e117-4ee5-8903-fdd4a06277e6)
+  Analyzing the dataset reveals 250,000 reviews. About 27.08% of questions appear more than score level, with duplication.
 
 - <b>Checking for Duplicates</b>
   No rows are found where 'qid1' and 'qid2' are the same or interchanged, indicating no duplicate question pairs in the dataset.
 
 - <b>cleaning the sentence along with text and words</b>
-  The histogram shows the log-scale distribution of the number of occurrences for each question, highlighting the maximum occurrence with a red dashed line.
-  
-  ![image](https://github.com/anandr07/Quora-Question-Pair-Similarity/assets/66896800/fde24825-f2ba-4079-b084-838138cd5d96)
-  The plot is close to a power-law distribution not exactly power-law but close to it.
 
 
 
@@ -104,53 +97,4 @@ Featurization (NLP and Fuzzy Features) Definition:
 - <b>Token:</b> You get a token by splitting sentence a space
 - <b>Stop_Word:</b> stop words as per NLTK.
 - <b>Word:</b> A token that is not a stop_word
-
-
-
-
-
-
-# Sentiment Prediction from Amazon Reviews
-
-This project employs advanced natural language processing and machine learning to analyze Amazon reviews, predicting sentiment shifts. It assists users and businesses in understanding and anticipating public perceptions of products, guiding development, and enhancing decision-making within the e-commerce landscape.
-
-## Problem Description:
-
-### Contents
-
-- [Overview](#overview)
-- [Data](#data)
-  - [Files](#files)
-  - [Details](#details)
-
-## Overview
-
-
-
-
-Brief description of your project.
-
-## Data
-
-### Files
-
-- **database.csv**: Contains the table 'Reviews'
-- **Reviews.csv**: Pulled from the corresponding SQLite table named Reviews in database.sqlite
-
-### Details
-
-The dataset includes:
-- Reviews from Oct 1999 - Oct 2012
-- 568,454 reviews
-- 256,059 users
-- 74,258 products
-- 260 users with > 50 reviews
-
-## Usage
-
-Instructions on how to use your project or any additional information.
-
-## Acknowledgments
-
-- Any credits or acknowledgments you want to include.
 
