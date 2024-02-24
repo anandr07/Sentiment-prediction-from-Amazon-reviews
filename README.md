@@ -77,7 +77,7 @@ Read CSV file into a Pandas DataFrame, display the first five rows and provide i
 - **dropping**
 - **assigning the value**
 - **removing the duplicate**
-- **checking using numerator and demonitor **
+- **checking using numerator and demonitor**
 - **removing the punctuation,HTML tag ,URL and Non-Alpha numeric**
 - **remove the stop words**
 - **tokenization of text**
