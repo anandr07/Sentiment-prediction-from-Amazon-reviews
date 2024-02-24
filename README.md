@@ -4,31 +4,23 @@ In the vast landscape of e-commerce, understanding customer sentiment is crucial
 ## Table of Contents
 
 1. [Problem Statement](#problem-statement)
-2. [Abort Dataset](#dataset-description)
-3. [Project Architecture](#project-architecture)
+2. [Abort Dataset](#Abort-DataSet)
+3. [Performance Metric](#Performance-Metric)
 4. [File Structure](#file-structure)
-6. [Performance Metric](#performance-metric)
-7. [Load the Data and Perform Data Analysis](#load-the-data-and-perform-data-analysis)
-8. [Distribution of Question Lengths](#distribution-of-question-lengths)
-9. [Feature Engineering](#feature-engineering)
-   - [Feature Extraction](#feature-extraction)
-     
-   - [Processing and Extracting Features](#processing-and-extracting-features)
-    
-   - [Pre-processing of Text](#pre-processing-of-text)
-     
-   - [Extracting Features](#extracting-features) 
-
-   - [Visualizing in Lower Dimension using t-SNE](#visualizing-in-lower-dimension-using-t-sne)
-   - [Featurizing Text Data with Tf-Idf Weighted Word-Vectors](#featurizing-text-data-with-tf-idf-weighted-word-vectors)
-     
-10. [Splitting into Train and Test Data](#splitting-into-train-and-test-data)
+5. [Performance Metric](#performance-metric)
+6. [Load the Data and Perform Data Analysis](#load-the-data-and-perform-data-analysis)
+7. [Distribution of data points among output classes](#Distribution-of-data-points-among-output-classes)
+8. [Feature Engineering](#feature-engineering)
+   - [Data Preprocessor](#Data-preprocessor)
+   - [Feature Extraction after pre-processing](#Feature-Extraction-after-pre-processing)
+   - [Some Additional Feature](#Some-additional-feature)
+9. [Splitting into Train and Test Data](#splitting-into-train-and-test-data)
   
      
-11. [Distribution of Output Variable in Train and Test Data](#distribution-of-output-variable-in-train-and-test-data)
+10. [Distribution of Output Variable in Train and Test Data](#distribution-of-output-variable-in-train-and-test-data)
   
      
-12. [Results](#results)
+11. [Results](#results)
 
 
 ## Problem Statement:
