@@ -61,24 +61,15 @@ The project initiates data analysis and machine learning by importing essential 
 Read CSV file into a Pandas DataFrame, display the first five rows and provide information about the dataset. It identifies the column on the basis of scores and dropping value above needed threshold and removing the duplicated values. The dataset initially has 568,454 reviews, and for the fast calculation we used 250,000 and after dropping rows with thresholdlimit its left with 230478 review and after removing the duplicate value 182,285 404,287 reviews. There are many duplicate value and and score above 3, dropping those rows.
 
 
-# Distribution of data points among output classes (Similar and Non Similar Questions
+# Distribution of data points among output classes
 - <b> Distribution of Duplicate and Non-duplicate reviews </b>
-  ![image](https://github.com/anandr07/Quora-Question-Pair-Similarity/assets/66896800/f7b9d6f6-a832-4443-83aa-27bdcd239590)
 
 - <b>Number of reviews above score given thresholds</b>
-  Analyzing the dataset reveals 537,929 unique qustions. About 20.78% of questions appear more than once, with the maximum repetition being 157 times.
+  Analyzing the dataset reveals 250000 unique reviews. About 27.08% of reviews appear more than once.
   
-  ![image](https://github.com/anandr07/Quora-Question-Pair-Similarity/assets/66896800/7ebc3018-e117-4ee5-8903-fdd4a06277e6)
-
 - <b>Checking for Duplicates</b>
-  No rows are found where 'qid1' and 'qid2' are the same or interchanged, indicating no duplicate question pairs in the dataset.
 
 - <b>cleaning the sentence along with text and words</b>
-  The histogram shows the log-scale distribution of the number of occurrences for each question, highlighting the maximum occurrence with a red dashed line.
-  
-  ![image](https://github.com/anandr07/Quora-Question-Pair-Similarity/assets/66896800/fde24825-f2ba-4079-b084-838138cd5d96)
-  The plot is close to a power-law distribution not exactly power-law but close to it.
-
 
 
 # Feature Engineering
