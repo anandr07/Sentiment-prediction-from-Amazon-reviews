@@ -6,17 +6,16 @@ In the vast landscape of e-commerce, understanding customer sentiment is crucial
 1. [Problem Statement](#problem-statement)
 2. [About DataSet](#About-DataSet)
 3. [Performance Metric](#Performance-Metric)
-4. [File Structure](#file-structure)
-5. [Performance Metric](#performance-metric)
-6. [Load the Data and Perform Data Analysis](#load-the-data-and-perform-data-analysis)
-7. [Distribution of data points among output classes](#Distribution-of-data-points-among-output-classes)
-8. [Feature Engineering](#feature-engineering)
+4. [Performance Metric](#performance-metric)
+5. [Load the Data and Perform Data Analysis](#load-the-data-and-perform-data-analysis)
+6. [Distribution of data points among output classes](#Distribution-of-data-points-among-output-classes)
+7. [Feature Engineering](#feature-engineering)
    - [Data Preprocessor](#Data-preprocessor)
    - [Feature Extraction after pre-processing](#Feature-Extraction-after-pre-processing)
-   - [Some Additional Feature](#Some-additional-feature)
-9. [Splitting into Train and Test Data](#splitting-into-train-and-test-data)    
-10. [Models used:](#Models-used)     
-11. [Results](#results)
+   - [Some Additional Feature](#Some-Additional-Feature)
+8. [Splitting into Train and Test Data](#splitting-into-train-and-test-data)    
+9. [Models used:](#Models-used)     
+10. [Results](#results)
 
 
 ## Problem Statement:
@@ -82,7 +81,7 @@ Featurization (NLP and Fuzzy Features) Definition:
 - <b>Word:</b> A token that is not a stop_word
 
 
-## Some additional features
+## Some Additional Feature
 - **Bag of words**
 - **Uni,Bi and tri grams**
 - **Tf-Idf Vectorization**
