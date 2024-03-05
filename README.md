@@ -103,3 +103,45 @@ Featurization (NLP and Fuzzy Features) Definition:
 ## Splitting into Train and Test Data
 Train Data : 70%
 Test Data : 30%
+
+Comparing the Original Text and the processed text
+![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/73d5b562-2d27-4715-b11d-5929430c3de4)
+
+Get the top 10 words most similar words to "quality"
+![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/de07f898-c08e-4bec-8d2d-6e72c2db0326)
+
+KNN on Bag of words
+![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/312bc6ea-d428-4abc-b592-230a46e8a507)
+![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/ddecfcd3-bd37-43af-b7a6-19e2868fcca8)
+![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/56573d16-cb01-48bf-ad57-84931be29b82)
+
+KNN on tfidf
+![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/a51f3675-0c60-4e88-9bc7-c47427723c7d)
+![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/d4b37b3c-0f8f-4a59-bd96-824474cdcd41)
+![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/bbbfd75a-10d2-4839-89a5-1874a46191db)
+
+Naive Bayes on Bag of Words
+![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/668cb884-5c3e-48b9-8d91-02a34a03b017)
+
+Naive Bayes on Tf-Idf
+![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/c71d1599-c453-4910-ae9f-7bfec04a77ed)
+
+SGD Classifier on Bag of Words
+![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/eb14b3e1-9851-4139-908d-81426c837119)
+
+SGD Classifier on Tf-Idf 
+![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/6c48f524-3a73-4b72-9c00-9cd991968af5)
+
+SGD Classifier on word2vec
+![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/6b1b2a8d-52bf-4c5a-ac81-b11a6642a8c5)
+
+
+
+
+
+
+
+
+
+
+
