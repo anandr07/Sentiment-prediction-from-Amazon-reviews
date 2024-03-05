@@ -4,7 +4,7 @@ In the vast landscape of e-commerce, understanding customer sentiment is crucial
 ## Table of Contents
 
 1. [Problem Statement](#problem-statement)
-2. [Abort Dataset](#Abort-DataSet)
+2. [About DataSet](#About-DataSet)
 3. [Performance Metric](#Performance-Metric)
 4. [File Structure](#file-structure)
 5. [Performance Metric](#performance-metric)
@@ -15,7 +15,7 @@ In the vast landscape of e-commerce, understanding customer sentiment is crucial
    - [Feature Extraction after pre-processing](#Feature-Extraction-after-pre-processing)
    - [Some Additional Feature](#Some-additional-feature)
 9. [Splitting into Train and Test Data](#splitting-into-train-and-test-data)    
-10. [Models used:](#Model_used)     
+10. [Models used:](#Models-used)     
 11. [Results](#results)
 
 
