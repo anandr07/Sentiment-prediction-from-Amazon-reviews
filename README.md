@@ -14,12 +14,8 @@ In the vast landscape of e-commerce, understanding customer sentiment is crucial
    - [Data Preprocessor](#Data-preprocessor)
    - [Feature Extraction after pre-processing](#Feature-Extraction-after-pre-processing)
    - [Some Additional Feature](#Some-additional-feature)
-9. [Splitting into Train and Test Data](#splitting-into-train-and-test-data)
-  
-     
-10. [Distribution of Output Variable in Train and Test Data](#distribution-of-output-variable-in-train-and-test-data)
-  
-     
+9. [Splitting into Train and Test Data](#splitting-into-train-and-test-data)    
+10. [Models used:](#Model_used)     
 11. [Results](#results)
 
 
@@ -100,15 +96,17 @@ Featurization (NLP and Fuzzy Features) Definition:
 
 - Checks if there are any NA (missing) values in the DataFrame after converting features to numeric format. If present, it prints "NA Values Present"; otherwise, it prints "No NA Values Present." It then displays the number of NaN values in each column after the conversion. Additionally, it converts the target variable y_true to a list of integers and shows the first few rows of the DataFrame.
 
-## Comparing the Original Text and the processed text
+### Comparing the Original Text and the processed text
 ![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/73d5b562-2d27-4715-b11d-5929430c3de4)
+
+
+### Get the top 10 words most similar words to "quality"
+![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/de07f898-c08e-4bec-8d2d-6e72c2db0326)
+
 
 ## Splitting into Train and Test Data
 Train Data : 70%
 Test Data : 30%
-
-## Get the top 10 words most similar words to "quality"
-![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/de07f898-c08e-4bec-8d2d-6e72c2db0326)
 
 ## Models used:
 
@@ -146,7 +144,13 @@ Test Data : 30%
 
 ## Results
 
-- The 
+- The SGD Classifier on tf-idf give best accuracy among all the model used .
+- Best Hyperparameters: {'alpha': 1.9211659757411964e-06, 'eta0': 0.01}
+- AUC Score (CV): 0.9582384628250535  Accuracy (CV): 0.9266463021839869
+- AUC Score (Train): 0.9995024371625396  Accuracy (Train): 0.9932857742341586
+  
+- ![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/11aef25f-de02-413e-8014-b0a85da71aab)
+
 
 
 
