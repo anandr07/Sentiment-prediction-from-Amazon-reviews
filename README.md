@@ -145,11 +145,11 @@ Test Data : 30%
 ## Results
 
 - The SGD Classifier on tf-idf give best accuracy among all the model used .
-- Best Hyperparameters: {'alpha': 1.9211659757411964e-06, 'eta0': 0.01}
-- AUC Score (CV): 0.9582384628250535  Accuracy (CV): 0.9266463021839869
-- AUC Score (Train): 0.9995024371625396  Accuracy (Train): 0.9932857742341586
+ Best Hyperparameters: {'alpha': 1.9211659757411964e-06, 'eta0': 0.01}
+ AUC Score (CV): 0.9582384628250535  Accuracy (CV): 0.9266463021839869
+ AUC Score (Train): 0.9995024371625396  Accuracy (Train): 0.9932857742341586
   
-- ![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/11aef25f-de02-413e-8014-b0a85da71aab)
+ ![image](https://github.com/anandr07/Sentiment-prediction-from-Amazon-reviews/assets/66896800/11aef25f-de02-413e-8014-b0a85da71aab)
 
 
 
